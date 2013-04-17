@@ -126,10 +126,17 @@ static inline struct vdisk *oid_to_vdisk(uint64_t oid)
 	return oid_to_vdisk_from(md_vds, md_nr_vds, oid);
 }
 
+static inline void trim_last_slash(char *path)
+{
+	while (path[strlen(path) - 1] == '/')
+		path[strlen(path) - 1] = '\0';
+}
+
 static int path_to_disk_idx(char *path)
 {
 	int i;
 
+	trim_last_slash(path);
 	for (i = 0; i < md_nr_disks; i++)
 		if (strcmp(md_disks[i].path, path) == 0)
 			return i;
